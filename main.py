@@ -1,6 +1,6 @@
-from data import get_data
+from influx import get_data
 from summary import get_summary
-from vis import visualize
+from visualization import visualize
 
 date = "2026-08-03"
 filename = f"./data/{date}.csv"
@@ -37,7 +37,6 @@ def main():
 #        f.write(in_csv.read())
 
     results = get_summary(opts=opts, in_csv=in_csv)
-    df = results["segments"]
     visualize(opts=opts, results=results)
 
     return 0

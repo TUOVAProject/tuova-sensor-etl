@@ -2,7 +2,6 @@ from datetime import datetime
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import pandas as pd
-from summary import get_summary
 
 state_colors = {
     -1: "white",
