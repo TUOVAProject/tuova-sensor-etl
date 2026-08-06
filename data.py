@@ -18,9 +18,9 @@ influx_token = os.getenv("INFLUX_TOKEN")
 def get_data(date):
     # default to yesterday
     if date is None:
-        date = datetime.now(timezone.utc) - timedelta(days=1)
+        date = datetime.now(timezone.utc).astimezone() - timedelta(days=1)
 
-    date = datetime.strptime(date, "%Y-%m-%d").replace(tzinfo=timezone.utc)
+    date = datetime.strptime(date, "%Y-%m-%d").replace(tzinfo=timezone.utc).astimezone()
     
     # get start and end timestamps
     start_dt = date.replace(hour=0, minute=0, second=0, microsecond=0)

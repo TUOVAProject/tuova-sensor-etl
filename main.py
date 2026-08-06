@@ -2,7 +2,8 @@ from data import get_data
 from summary import get_summary
 from vis import visualize
 
-date= "2026-06-15"
+date = "2026-08-03"
+filename = f"./data/{date}.csv"
 
 # config
 opts = {
@@ -20,7 +21,7 @@ opts = {
         6.5,
         100
     ],
-    "debounce_up_sec": 10, 
+    "debounce_up_sec": 15, 
     "debounce_down_sec": 30
 }
 
@@ -28,8 +29,15 @@ opts = {
 
 # test the logik
 def main():
-    in_csv = get_data(date)
+    in_csv = get_data(date)  # read from API
+#    in_csv = filename       # read from file
+
+#    # write to file
+#    with open(filename, "w") as f:
+#        f.write(in_csv.read())
+
     results = get_summary(opts=opts, in_csv=in_csv)
+    df = results["segments"]
     visualize(opts=opts, results=results)
 
     return 0

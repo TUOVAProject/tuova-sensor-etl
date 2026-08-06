@@ -23,7 +23,7 @@ def get_summary(in_csv=None, in_df=None, opts={}):
         df = in_df
 
     # parse timestamps to "ts"
-    df["ts"] = pd.to_datetime(df["_time"], format="mixed")
+    df["ts"] = pd.to_datetime(df["_time"], format="mixed", utc=True).dt.tz_convert("Europe/Helsinki").dt.tz_localize(None)
 
     # use ts and FIELD_NAME only (could be "L1" or whatever is used)
     df = df[["ts", field_name]]
