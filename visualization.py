@@ -48,9 +48,9 @@ def visualize(opts=None, results=None):
     count_processing = (segments["state"] == 2).sum()
 
     # total durations
-    dur_off = totals.loc[totals["state_name"] == "OFF", "duration_min"].iloc[0]
-    dur_idle = totals.loc[totals["state_name"] == "IDLE", "duration_min"].iloc[0]
-    dur_processing = totals.loc[totals["state_name"] == "PROCESSING", "duration_min"].iloc[0]
+    dur_off = next(iter(totals.loc[totals["state_name"] == "OFF", "duration_min"]), 0)
+    dur_idle = next(iter(totals.loc[totals["state_name"] == "IDLE", "duration_min"]), 0)
+    dur_processing = next(iter(totals.loc[totals["state_name"] == "PROCESSING", "duration_min"]), 0)
 
     # percentages
     dur_total = dur_off + dur_idle + dur_processing
