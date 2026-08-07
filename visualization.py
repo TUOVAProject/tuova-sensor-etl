@@ -11,7 +11,7 @@ state_colors = {
     3: "white",
 }
 
-def visualize(opts=None, results=None):
+def visualize(results=None, opts=None, ):
     if opts is None or results is None:
         print("vis err: missing parameters")
         return -1

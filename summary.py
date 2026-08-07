@@ -3,9 +3,9 @@ import numpy as np
 
 def get_summary(in_csv=None, in_df=None, opts={}):
     # config
-    field_name = opts["field_name"] #getattr(opts, "field_name", None) or "L1"
-    debounce_up_sec = opts["debounce_up_sec"] #getattr(opts,"debounce_up_sec", None) or 10
-    debounce_down_sec = opts["debounce_down_sec"] #getattr(opts,"debounce_down_sec", None) or 30
+    field_name = opts["field_name"]
+    debounce_up_sec = opts["debounce_up_sec"]
+    debounce_down_sec = opts["debounce_down_sec"]
 
     df: pd.DataFrame = None
 
@@ -98,8 +98,6 @@ def get_summary(in_csv=None, in_df=None, opts={}):
 
     # add state names
     totals["state_name"] = totals.index.map(opts["states"])
-    # totals.info()
 
     # return timeseries values, state segments ("events") and total durations
     return {"df": df, "segments": segments, "totals": totals}
-
