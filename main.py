@@ -43,6 +43,16 @@ opts = {
     "pg_user": os.getenv("POSTGRES_USER"),
     "pg_pass": os.getenv("POSTGRES_PASS"),
     "pg_db": os.getenv("POSTGRES_DB"),
+
+    # (data model v1.2)
+    "event_type_ids": {
+        0: 15,  # "POWER OFF"
+        1: 13,  # "MACHINE IDLE"
+        2: 8,   # "MACHINE PRODUCTION"
+        99: 16  # "MACHINE DAY" (??)
+    },
+    "event_source_id": 3,
+    "event_workcenter_id": os.getenv("EVENT_WORKCENTER_ID")
 }
 
 ###
@@ -57,8 +67,8 @@ def main():
 #        f.write(in_csv.read())
 
     results = get_summary(in_csv=in_csv, opts=opts)
-    visualize(results=results, opts=opts)
-    #insert_summary(data=results["segments"], opts=opts)
+    #visualize(results=results, opts=opts)
+    insert_summary(data=results, opts=opts)
 
     return 0
 

@@ -1,7 +1,6 @@
 from datetime import datetime
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
-import pandas as pd
 
 state_colors = {
     -1: "white",
@@ -16,9 +15,9 @@ def visualize(results=None, opts=None, ):
         print("vis err: missing parameters")
         return -1
     
-    df: pd.DataFrame = results["df"]
-    segments: pd.DataFrame = results["segments"]
-    totals: pd.DataFrame = results["totals"]
+    df = results["df"]
+    segments = results["segments"]
+    totals = results["totals"]
 
     # timeseries, bars and table
     fig, (a1, a2, ax_tbl) = plt.subplots(
