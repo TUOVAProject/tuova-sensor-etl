@@ -1,8 +1,6 @@
 from datetime import datetime
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
-import pandas as pd
-from summary import get_summary
 
 state_colors = {
     -1: "white",
@@ -12,14 +10,14 @@ state_colors = {
     3: "white",
 }
 
-def visualize(opts=None, results=None):
+def visualize(results=None, opts=None, ):
     if opts is None or results is None:
         print("vis err: missing parameters")
         return -1
     
-    df: pd.DataFrame = results["df"]
-    segments: pd.DataFrame = results["segments"]
-    totals: pd.DataFrame = results["totals"]
+    df = results["df"]
+    segments = results["segments"]
+    totals = results["totals"]
 
     # timeseries, bars and table
     fig, (a1, a2, ax_tbl) = plt.subplots(
@@ -49,9 +47,9 @@ def visualize(opts=None, results=None):
     count_processing = (segments["state"] == 2).sum()
 
     # total durations
-    dur_off = totals.loc[totals["state_name"] == "OFF", "duration_min"].iloc[0]
-    dur_idle = totals.loc[totals["state_name"] == "IDLE", "duration_min"].iloc[0]
-    dur_processing = totals.loc[totals["state_name"] == "PROCESSING", "duration_min"].iloc[0]
+    dur_off = next(iter(totals.loc[totals["state_name"] == "OFF", "duration_min"]), 0)
+    dur_idle = next(iter(totals.loc[totals["state_name"] == "IDLE", "duration_min"]), 0)
+    dur_processing = next(iter(totals.loc[totals["state_name"] == "PROCESSING", "duration_min"]), 0)
 
     # percentages
     dur_total = dur_off + dur_idle + dur_processing

@@ -1,26 +1,21 @@
-import os
 import io
 import csv
 from datetime import datetime, timedelta, timezone
 import influxdb_client
-from dotenv import load_dotenv
-from summary import get_summary
-
-# env
-load_dotenv()
-influx_url = os.getenv("INFLUX_URL")
-influx_org = os.getenv("INFLUX_ORG")
-influx_bucket = os.getenv("INFLUX_BUCKET")
-influx_measurement = os.getenv("INFLUX_MEASUREMENT")
-influx_token = os.getenv("INFLUX_TOKEN")
 
 # logik
-def get_data(date):
-    # default to yesterday
-    if date is None:
-        date = datetime.now(timezone.utc) - timedelta(days=1)
+def get_data(date=None, opts={}):
+    influx_url = opts["influx_url"]
+    influx_org = opts["influx_org"]
+    influx_bucket = opts["influx_bucket"]
+    influx_measurement = opts["influx_measurement"]
+    influx_token = opts["influx_token"]
 
-    date = datetime.strptime(date, "%Y-%m-%d").replace(tzinfo=timezone.utc)
+    if date is None:
+        # default to yesterday
+        date = datetime.now(timezone.utc).astimezone() - timedelta(days=1)
+
+    date = datetime.strptime(date, "%Y-%m-%d").replace(tzinfo=timezone.utc).astimezone()
     
     # get start and end timestamps
     start_dt = date.replace(hour=0, minute=0, second=0, microsecond=0)
