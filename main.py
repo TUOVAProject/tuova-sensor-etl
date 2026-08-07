@@ -1,6 +1,10 @@
+from dotenv import load_dotenv
+load_dotenv()
+
 from influx import get_data
 from summary import get_summary
 from visualization import visualize
+from postgres import insert_summary
 
 date = "2026-08-03"
 filename = f"./data/{date}.csv"
@@ -29,15 +33,16 @@ opts = {
 
 # test the logik
 def main():
-    in_csv = get_data(date)  # read from API
-#    in_csv = filename       # read from file
+#    in_csv = get_data(date)  # read from API
+    in_csv = filename       # read from file
 
 #    # write to file
 #    with open(filename, "w") as f:
 #        f.write(in_csv.read())
 
     results = get_summary(opts=opts, in_csv=in_csv)
-    visualize(opts=opts, results=results)
+    #visualize(opts=opts, results=results)
+    insert_summary(results["segments"])
 
     return 0
 
@@ -54,6 +59,7 @@ def dag_process(date=None):
     results = get_summary(opts=opts, in_csv=in_csv)
 
     # format and insert to db
+    insert_summary(results["segments"])
     # TODO
 
     return 0

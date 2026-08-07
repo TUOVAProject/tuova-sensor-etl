@@ -3,11 +3,8 @@ import io
 import csv
 from datetime import datetime, timedelta, timezone
 import influxdb_client
-from dotenv import load_dotenv
-from summary import get_summary
 
 # env
-load_dotenv()
 influx_url = os.getenv("INFLUX_URL")
 influx_org = os.getenv("INFLUX_ORG")
 influx_bucket = os.getenv("INFLUX_BUCKET")
