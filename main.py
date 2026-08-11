@@ -46,13 +46,14 @@ opts = {
 
     # (data model v1.2)
     "event_type_ids": {
-        0: 15,  # "POWER OFF"
-        1: 13,  # "MACHINE IDLE"
+        0: 16,  # "POWER OFF"
+        1: 14,  # "MACHINE IDLE"
         2: 8,   # "MACHINE PRODUCTION"
-        99: 16  # "MACHINE DAY" (??)
+        99: 17  # "MACHINE DAY" (??)
     },
     "event_source_id": 3,
-    "event_workcenter_id": os.getenv("EVENT_WORKCENTER_ID")
+    "event_workcenter_id": os.getenv("EVENT_WORKCENTER_ID"),
+    "LOCALE": "Europe/Helsinki"
 }
 
 ###
