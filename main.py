@@ -45,11 +45,12 @@ opts = {
     "pg_db": os.getenv("POSTGRES_DB"),
 
     # (data model v1.2)
+    # TODO: get these from DB
     "event_type_ids": {
         0: 16,  # "POWER OFF"
         1: 14,  # "MACHINE IDLE"
         2: 8,   # "MACHINE PRODUCTION"
-        99: 17  # "MACHINE DAY" (??)
+        9999: 17  # "MACHINE DAY"
     },
     "event_source_id": 3,
     "event_workcenter_id": os.getenv("EVENT_WORKCENTER_ID"),
