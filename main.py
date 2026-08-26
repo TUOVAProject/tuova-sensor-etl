@@ -1,76 +1,27 @@
-import os
-from dotenv import load_dotenv
+from config import config as opts
 from influx import get_data
 from summary import get_summary
 from visualization import visualize
 from postgres import insert_summary
 
-load_dotenv()
 
-date = "2026-08-03"
+date = "2026-08-04"
 filename = f"./data/{date}.csv"
-
-# config
-opts = {
-    # summary:
-    "field_name": "L1", 
-    "states": {
-        -1: "LOW_ERR",
-        0: "OFF",
-        1: "IDLE",
-        2: "PROCESSING",
-        3: "HIGH_ERR"
-    }, 
-    "thresholds": [
-        0,
-        0.8,
-        6.5,
-        100
-    ],
-    "debounce_up_sec": 15, 
-    "debounce_down_sec": 30,
-
-    # influxdb:
-    "influx_url": os.getenv("INFLUX_URL"),
-    "influx_org": os.getenv("INFLUX_ORG"),
-    "influx_bucket": os.getenv("INFLUX_BUCKET"),
-    "influx_measurement": os.getenv("INFLUX_MEASUREMENT"),
-    "influx_token": os.getenv("INFLUX_TOKEN"),
-
-    # postgres:
-    "pg_host": os.getenv("POSTGRES_HOST"),
-    "pg_port": os.getenv("POSTGRES_PORT"),
-    "pg_user": os.getenv("POSTGRES_USER"),
-    "pg_pass": os.getenv("POSTGRES_PASS"),
-    "pg_db": os.getenv("POSTGRES_DB"),
-
-    # (data model v1.2)
-    # TODO: get these from DB
-    "event_type_ids": {
-        0: 16,  # "POWER OFF"
-        1: 14,  # "MACHINE IDLE"
-        2: 8,   # "MACHINE PRODUCTION"
-        9999: 17  # "MACHINE DAY"
-    },
-    "event_source_id": 3,
-    "event_workcenter_id": os.getenv("EVENT_WORKCENTER_ID"),
-    "LOCALE": "Europe/Helsinki"
-}
 
 ###
 
 # test the logik
 def main():
-    in_csv = get_data(date=date, opts=opts)  # read from API
-#    in_csv = filename       # read from file
+#    in_csv = get_data(date=date, opts=opts)  # read from API
+    in_csv = filename       # read from file
 
 #    # write to file
 #    with open(filename, "w") as f:
 #        f.write(in_csv.read())
 
     results = get_summary(in_csv=in_csv, opts=opts)
-    #visualize(results=results, opts=opts)
-    insert_summary(data=results, opts=opts)
+    visualize(results=results, opts=opts)
+    #insert_summary(data=results, opts=opts)
 
     return 0
 
