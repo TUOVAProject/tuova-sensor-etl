@@ -1,7 +1,4 @@
 import os
-from dotenv import load_dotenv
-
-load_dotenv()
 
 config = {
     # summary:
@@ -46,5 +43,7 @@ config = {
     },
     "event_source_id": 3,
     "event_workcenter_id": os.getenv("EVENT_WORKCENTER_ID"),
-    "LOCALE": "Europe/Helsinki"
+    "LOCALE": "Europe/Helsinki",
+    "dag_python_exec_path": os.getenv("DAG_PYTHON_EXEC_PATH"),
+    "dag_env_path": os.getenv("DAG_ENV_PATH")
 }

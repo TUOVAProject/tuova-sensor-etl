@@ -1,10 +1,14 @@
 import json
-import sys
+from dotenv import load_dotenv
 
-sys.path.append(".")
-sys.path.append("..")
+load_dotenv()
 
-from config import config
+# print config as json for importing to airflow's variables
+# NOTE:
+# probably simpler to only add SENSORS_PYTHON_EXEC_PATH to airflow and have everything else in .env inside the .venv
+#
+
+from tuova_sensors.config import config
 
 airflow_vars = {
     "SENSORS_INFLUX_URL": config["influx_url"],
@@ -17,7 +21,9 @@ airflow_vars = {
     "SENSORS_POSTGRES_USER": config["pg_user"],
     "SENSORS_POSTGRES_PASS": config["pg_pass"],
     "SENSORS_POSTGRES_DB": config["pg_db"],
-    "SENSORS_EVENT_WORKCENTER_ID": config["event_workcenter_id"]
+    "SENSORS_EVENT_WORKCENTER_ID": config["event_workcenter_id"],
+    "SENSORS_PYTHON_EXEC_PATH": config["dag_python_exec_path"],
+    "SENSORS_ENV_PATH": config["dag_env_path"],
 }
 
 print(json.dumps(airflow_vars))

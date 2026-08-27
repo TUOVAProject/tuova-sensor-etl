@@ -1,13 +1,10 @@
 import sys
 
-sys.path.append(".")
-sys.path.append("..")
-
-from config import config as opts
-from influx import get_data
-from summary import get_summary
-from visualization import visualize
-from postgres import insert_summary
+from tuova_sensors.config import config as opts
+from tuova_sensors.influx import get_data
+from tuova_sensors.summary import get_summary
+from tuova_sensors.visualization import visualize
+from tuova_sensors.postgres import insert_summary
 
 
 date = "2026-08-04"
