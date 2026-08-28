@@ -1,4 +1,6 @@
-import sys
+from dotenv import load_dotenv
+
+load_dotenv()
 
 from tuova_sensors.config import config as opts
 from tuova_sensors.influx import get_data
