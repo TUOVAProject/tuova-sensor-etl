@@ -10,9 +10,13 @@ dependencies = [
     "matplotlib>=3.10.9",
     "pandas>=2.3.3",
     "psycopg>=3.3.4",
+    "pyarrow>=25.0.1",
 ]
 
 [dependency-groups]
 dev = [
     "apache-airflow>=3.3.1",
 ]
+
+[tool.setuptools.packages.find]
+exclude = ["DATA*"]

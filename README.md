@@ -40,7 +40,7 @@ An example deployment process would go as follows (adjust the paths as needed):
 
 1. Access the Airflow host machine (e.g. with `ssh`)
 2. Access Airflow container with `docker exec -it airflow-dag-processor bash` (adjust container name as needed)
-3. Create directory for the virtual environment with `mkdir -p /opt/airflow/config/python-venvs/tuova_sensors`
+3. Create directory for the virtual environment with `mkdir -p /opt/airflow/config/python-venvs/tuova_sensors/DATA`
 4. Create the virtual environment with `cd /opt/airflow/config/python-venvs/tuova_sensors && python -m venv .venv`
 5. On the local machine, bundle the required files to `./build` by running `./build.sh`
 6. Copy contents of the `./build` directory to the Airflow host machine, e.g.:

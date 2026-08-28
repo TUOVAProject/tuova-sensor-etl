@@ -13,7 +13,7 @@ def get_data(date=None, opts={}):
 
     if date is None:
         # default to yesterday
-        date = datetime.now(timezone.utc).astimezone() - timedelta(days=1)
+        date = (datetime.now(timezone.utc).astimezone() - timedelta(days=1)).date().isoformat()
 
     date = datetime.strptime(date, "%Y-%m-%d").replace(tzinfo=timezone.utc).astimezone()
     
