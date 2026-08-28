@@ -1,17 +1,6 @@
 import os
-from dotenv import load_dotenv
-from influx import get_data
-from summary import get_summary
-from visualization import visualize
-from postgres import insert_summary
 
-load_dotenv()
-
-date = "2026-08-03"
-filename = f"./data/{date}.csv"
-
-# config
-opts = {
+config = {
     # summary:
     "field_name": "L1", 
     "states": {
@@ -45,7 +34,7 @@ opts = {
     "pg_db": os.getenv("POSTGRES_DB"),
 
     # (data model v1.2)
-    # TODO: get these from DB
+    # TODO: get these from DB?
     "event_type_ids": {
         0: 16,  # "POWER OFF"
         1: 14,  # "MACHINE IDLE"
@@ -54,46 +43,7 @@ opts = {
     },
     "event_source_id": 3,
     "event_workcenter_id": os.getenv("EVENT_WORKCENTER_ID"),
-    "LOCALE": "Europe/Helsinki"
+    "LOCALE": "Europe/Helsinki",
+    "dag_python_exec_path": os.getenv("DAG_PYTHON_EXEC_PATH"),
+    "dag_env_path": os.getenv("DAG_ENV_PATH")
 }
-
-###
-
-# test the logik
-def main():
-    in_csv = get_data(date=date, opts=opts)  # read from API
-#    in_csv = filename       # read from file
-
-#    # write to file
-#    with open(filename, "w") as f:
-#        f.write(in_csv.read())
-
-    results = get_summary(in_csv=in_csv, opts=opts)
-    #visualize(results=results, opts=opts)
-    insert_summary(data=results, opts=opts)
-
-    return 0
-
-###
-
-# this would be the whole process
-def dag_process(date=None):
-
-    # TODO: do the process
-
-    # get data
-    in_csv = get_data(date=date, opts=opts)
-
-    # get summary
-    results = get_summary(in_csv=in_csv, opts=opts)
-
-    # format and insert to db
-    insert_summary(data=results["segments"], opts=opts)
-    # TODO
-
-    return 0
-
-
-###
-if __name__ == "__main__":
-    main()

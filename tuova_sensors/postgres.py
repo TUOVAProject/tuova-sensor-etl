@@ -1,6 +1,6 @@
 import psycopg
 
-def insert_summary(data=None, opts={}):
+def insert_summary(data=None, opts={}, dry_run=False):
     pg_host = opts["pg_host"]
     pg_port = opts["pg_port"]
     pg_user = opts["pg_user"]
@@ -78,9 +78,13 @@ def insert_summary(data=None, opts={}):
     '''
 
     # batch insert
-    with psycopg.connect(conninfo=f"host={pg_host} port={pg_port} user={pg_user} password={pg_pass} dbname={pg_db}") as conn:
-        with conn.cursor() as cur:
-            cur.executemany("""
-                INSERT INTO fact_machine_events (event_type_id, source_id, workcenter_id, start_at, end_at, duration_min, efficient_production_min,efficient_production_pct,idle_sum_min,idle_sum_pct,power_off_min,power_off_pct) 
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
-            """, rows)
+    if dry_run is not True:
+        with psycopg.connect(conninfo=f"host={pg_host} port={pg_port} user={pg_user} password={pg_pass} dbname={pg_db}") as conn:
+            with conn.cursor() as cur:
+                cur.executemany("""
+                    INSERT INTO fact_machine_events (event_type_id, source_id, workcenter_id, start_at, end_at, duration_min, efficient_production_min,efficient_production_pct,idle_sum_min,idle_sum_pct,power_off_min,power_off_pct) 
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
+                """, rows)
+
+    else:
+        return f"Pretending to insert {len(rows)} rows..."
