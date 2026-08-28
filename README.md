@@ -46,6 +46,7 @@ An example deployment process would go as follows (adjust the paths as needed):
 6. Copy contents of the `./build` directory to the Airflow host machine, e.g.:
 
 `scp -r ./build/* user@AIRFLOW_HOST:/home/user/projects/airflow/data/config/python-venvs/tuova_sensors/`
+
 `scp ./build/.env user@AIRFLOW_HOST:/home/user/projects/airflow/data/config/python-venvs/tuova_sensors/`
 
 (it's likely that a wild `permission denied` appears, in that case either `chown` or `chmod` the target folder as appropriate, or `scp` the stuff to somewhere else first, then `sudo cp` to the destination folder on the target host)
@@ -62,11 +63,17 @@ An example deployment process would go as follows (adjust the paths as needed):
 - `SENSORS_PYTHON_EXEC_PATH` = `/opt/airflow/config/python-venvs/tuova_sensors/.venv/bin/python`
 
 11. ???
+12. !!!
+13. TODO: Make a script to do all of this and more
 
 ## Configuration
 
-- ??!!
+1. ??!!
+2. TODO: handle multiple machines
+
+## Other
 
 ```bash
+# create requirements.txt from uv project
 uv export --no-dev --no-hashes --no-annotate --no-header --format requirements-txt > requirements.txt
 ```
