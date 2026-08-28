@@ -79,9 +79,8 @@ def load_data(env_path=None, date=None):
     from tuova_sensors.config import config
     from tuova_sensors.postgres import insert_summary
 
-    # TODO:
     print(f"load_data [{date}]...")
-    # should again have the DATA folder at the "root" of the venv
+    # should once again have the DATA folder at the "root" of the venv
     folder_path = os.path.join(os.path.dirname(env_path), "DATA")
 
     # get the parquets
@@ -92,6 +91,7 @@ def load_data(env_path=None, date=None):
     totals = pd.read_parquet(f"{file_base}.totals.parquet")
 
     # do the postgres call
+    # TODO: remove dry_run
     result = insert_summary(data={"df": df, "segments": segments, "totals": totals}, opts=config, dry_run=True)
     print(result)
 
@@ -100,9 +100,21 @@ def load_data(env_path=None, date=None):
 
 ###
 def cleanup(env_path=None, date=None):
-    # remove all files created by the current run tasks
-    # TODO:
+    # remove all files created by the previous tasks
+
+    import os
+    import glob
+
     print(f"cleanup [{date}]...")
+
+    # should definitely at this point have the DATA folder at the "root" of the venv
+    folder_path = os.path.join(os.path.dirname(env_path), "DATA")
+    for f in glob.glob(f"{folder_path}/{date}*"):
+        print(f"delete {f}")
+        os.unlink(f)
+
+    # return the date again, maybe someone finds it useful
+    return date
 
 ###
 
@@ -117,11 +129,31 @@ with DAG(
     description="Extract machine events from current sensor data",
     schedule="0 4 * * *" # TODO: get from airflow.models.Variable?
 ) as dag:
+
     # note those op_kwargs at the end
-    extract_data_task = ExternalPythonOperator(python=python_exec_path, task_id="extract_data_task", python_callable=extract_data, op_kwargs={"env_path": env_path})
-    transform_data_task = ExternalPythonOperator(python=python_exec_path, task_id="transform_data_task", python_callable=transform_data, op_kwargs={"env_path": env_path, "date": extract_data_task.output})
-    load_data_task = ExternalPythonOperator(python=python_exec_path, task_id="load_data_task", python_callable=load_data, op_kwargs={"env_path": env_path, "date": transform_data_task.output})
-    cleanup_task = ExternalPythonOperator(python=python_exec_path, task_id="cleanup_task", python_callable=cleanup, op_kwargs={"env_path": env_path, "date": load_data_task.output})
+    extract_data_task = ExternalPythonOperator(
+        python=python_exec_path,
+        task_id="extract_data_task",
+        python_callable=extract_data,
+        op_kwargs={"env_path": env_path})
+
+    transform_data_task = ExternalPythonOperator(
+        python=python_exec_path,
+        task_id="transform_data_task",
+        python_callable=transform_data,
+        op_kwargs={"env_path": env_path, "date": extract_data_task.output})
+
+    load_data_task = ExternalPythonOperator(
+        python=python_exec_path,
+        task_id="load_data_task",
+        python_callable=load_data,
+        op_kwargs={"env_path": env_path, "date": transform_data_task.output})
+
+    cleanup_task = ExternalPythonOperator(
+        python=python_exec_path,
+        task_id="cleanup_task",
+        python_callable=cleanup,
+        op_kwargs={"env_path": env_path, "date": load_data_task.output})
 
     # weird Airflow process pipeline task order definition syntax thingy
     extract_data_task >> transform_data_task >> load_data_task >> cleanup_task
