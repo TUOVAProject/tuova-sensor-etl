@@ -1,4 +1,5 @@
 import psycopg
+from datetime import timedelta
 
 def insert_summary(data=None, opts={}, dry_run=False):
     pg_host = opts["pg_host"]
@@ -25,7 +26,7 @@ def insert_summary(data=None, opts={}, dry_run=False):
     # daily summary row from data["totals"]
     t_tuples = list(data["totals"].itertuples(index=False, name=None))
     start_of_day = tuples[0][1].replace(hour=0,minute=0,second=0,microsecond=0)
-    end_of_day = start_of_day.replace(day = start_of_day.day + 1)
+    end_of_day = start_of_day + timedelta(days=1)
     minutes_in_day = (end_of_day - start_of_day).total_seconds() / 60 # might as well just say 1440 here but we live in strange times
     # TODO: should account for other states too, i.e. get these from opts[]
     processing_min = next((t[0] for t in t_tuples if t[2] == "PROCESSING"), 0) / 60
