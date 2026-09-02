@@ -19,6 +19,9 @@ def visualize(results=None, opts=None, ):
     segments = results["segments"]
     totals = results["totals"]
 
+    if df is None or segments is None or totals is None:
+        return -1
+
     # timeseries, bars and table
     fig, (a1, a2, ax_tbl) = plt.subplots(
         3, 1, sharex=True, gridspec_kw={"height_ratios": [3, 2, 1]}

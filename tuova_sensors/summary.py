@@ -1,9 +1,11 @@
 import pandas as pd
 import numpy as np
 
+err_result = {"df": None, "segments": None, "totals": None}
+
 def get_summary(in_csv=None, in_df=None, opts={}):
     # config
-    field_name = opts["field_name"]
+    field_name = opts["influx_field"]
     debounce_up_sec = opts["debounce_up_sec"]
     debounce_down_sec = opts["debounce_down_sec"]
 
@@ -15,8 +17,11 @@ def get_summary(in_csv=None, in_df=None, opts={}):
             df = pd.read_csv(in_csv)
 
         except Exception as e:
-            print("read csv - err: " + str(e))
-            return None
+            print(f'summary.py - (workcenter_id={opts["workcenter_id"]}) read csv err: {str(e)}')
+            return err_result
+
+    else:
+        return err_result
         
     # or a dataframe
     if in_df is not None:
