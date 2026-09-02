@@ -7,13 +7,13 @@ global_var = "GLOBAL_VAR"
 
 with DAG(
     "test_dynamic_tasks_dag",
-        default_args={
-            "depends_on_past": False,
-            "retries": 0,
-            "retry_delay": timedelta(minutes=1)
-        },
-        description='Try to figure out how "task expansion" (or whatever) works',
-        schedule="0 4 * * *"
+    default_args={
+        "depends_on_past": False,
+        "retries": 0,
+        "retry_delay": timedelta(minutes=1)
+    },
+    description='Try to figure out how "task expansion" (or whatever) works',
+    schedule="0 4 * * *"
 ) as dag:
 
     @task
