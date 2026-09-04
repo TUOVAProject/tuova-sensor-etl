@@ -10,11 +10,11 @@ def insert_summary(data=None, opts={}, dry_run=False):
 
     event_type_ids = opts["event_type_ids"]
     event_source_id = opts["event_source_id"]
-    event_workcenter_id = opts["event_workcenter_id"]
+    workcenter_id = opts["workcenter_id"]
 
     LOCALE = opts["LOCALE"]
 
-    if data is None or len(data["segments"]) <= 0:
+    if data is None or data["segments"] is None or len(data["segments"]) <= 0:
         return -1
     
     # create segment tuples as (state, start, end, duration_sec)
@@ -37,7 +37,7 @@ def insert_summary(data=None, opts={}, dry_run=False):
     rows.append((
         event_type_ids[9999],
         event_source_id,
-        int(event_workcenter_id),
+        int(workcenter_id),
         start_of_day.tz_localize(LOCALE).isoformat(),
         end_of_day.tz_localize(LOCALE).isoformat(),
         minutes_in_day,
@@ -57,7 +57,7 @@ def insert_summary(data=None, opts={}, dry_run=False):
         rows.append((
             event_type_ids[t[0]],
             event_source_id,
-            int(event_workcenter_id),
+            int(workcenter_id),
             t[1].tz_localize(LOCALE).isoformat(),
             t[2].tz_localize(LOCALE).isoformat(),
             float(t[3] / 60),
