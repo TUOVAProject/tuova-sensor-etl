@@ -2,7 +2,6 @@ import os
 
 config = {
     # summary:
-    "field_name": "L1", 
     "states": {
         -1: "LOW_ERR",
         0: "OFF",
@@ -23,7 +22,6 @@ config = {
     "influx_url": os.getenv("INFLUX_URL"),
     "influx_org": os.getenv("INFLUX_ORG"),
     "influx_bucket": os.getenv("INFLUX_BUCKET"),
-    "influx_measurement": os.getenv("INFLUX_MEASUREMENT"),
     "influx_token": os.getenv("INFLUX_TOKEN"),
 
     # postgres:
@@ -42,8 +40,11 @@ config = {
         9999: 17  # "MACHINE DAY"
     },
     "event_source_id": 3,
-    "event_workcenter_id": os.getenv("EVENT_WORKCENTER_ID"),
     "LOCALE": "Europe/Helsinki",
     "dag_python_exec_path": os.getenv("DAG_PYTHON_EXEC_PATH"),
-    "dag_env_path": os.getenv("DAG_ENV_PATH")
+    "dag_env_path": os.getenv("DAG_ENV_PATH"),
+    # mapping of workcenters to influxdb _measurement._field
+    # WORKCENTERS env variable structure:
+    # [{"workcenter_id": "WORKCENTER_ID", "influx_measurement": "INFLUX_MEASUREMENT", "influx_field": "INFLUX_FIELD"}]
+    "workcenters": os.getenv("WORKCENTERS"),
 }
