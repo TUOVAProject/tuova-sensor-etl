@@ -167,8 +167,7 @@ with DAG(
             totals = pd.read_parquet(f"{file_base}.totals.parquet")
 
             # do the postgres call
-            # TODO: remove dry_run
-            result = insert_summary(data={"df": df, "segments": segments, "totals": totals}, opts=real_opts, dry_run=True)
+            result = insert_summary(data={"df": df, "segments": segments, "totals": totals}, opts=real_opts, dry_run=False)
             print(result)
         except Exception as ex:
             print("load_data - there's probably nothing much to load, see that error below?")
