@@ -36,7 +36,7 @@ config = {
     "event_type_ids": {
         0: 16,  # "POWER OFF"
         1: 14,  # "MACHINE IDLE"
-        2: 8,   # "MACHINE PRODUCTION"
+        2: 11,   # "MACHINE PRODUCTION"
         9999: 17  # "MACHINE DAY"
     },
     "event_source_id": 3,
