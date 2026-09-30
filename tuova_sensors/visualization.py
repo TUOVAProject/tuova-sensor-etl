@@ -75,7 +75,7 @@ def visualize(results=None, opts=None, ):
     a1.set_ylim(0, 50)
     a1.xaxis.set_major_formatter(mdates.DateFormatter('%H:%M:%S'))
     title = datetime.strftime(df.index[0].to_pydatetime(), "%d.%m.%Y")
-    fig.suptitle(f'{title}\nt={",".join(map(str, opts["thresholds"]))}\nidle_t={opts["debounce_down_sec"]}s, proc_t={opts["debounce_up_sec"]}s')
+    fig.suptitle(f'{title}\nt={",".join(map(str, (v["max"] for v in opts["states"].values())))}\nidle_t={opts["debounce_down_sec"]}s, proc_t={opts["debounce_up_sec"]}s')
     plt.tight_layout()
 
     plt.show()
