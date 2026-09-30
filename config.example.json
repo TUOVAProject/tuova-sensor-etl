@@ -1,0 +1,49 @@
+{
+  "influx_url": "",
+  "influx_org": "",
+  "influx_bucket": "",
+  "influx_token": "",
+
+  "pg_host": "",
+  "pg_port": "",
+  "pg_user": "",
+  "pg_pass": "",
+  "pg_db": "",
+
+  "workcenters": [
+    {
+      "workcenter_id": "WORKCENTER_ID",
+      "influx_measurement": "tuova-iot",
+      "influx_field": "L1",
+      "states": {
+        "OFF": {
+          "id": 0,
+          "min": 0,
+          "max": 0.8
+        },
+        "IDLE": {
+          "id": 1,
+          "min": 0.8,
+          "max": 6.5
+        },
+        "PROCESSING": {
+          "id": 2,
+          "min": 6.5,
+          "max": 100
+        }
+      },
+      "debounce_up_sec": 15,
+      "debounce_down_sec": 30
+    }
+  ],
+
+  "event_type_ids": {
+    "0": 16,
+    "1": 14,
+    "2": 11,
+    "9999": 17
+  },
+
+  "event_source_id": 3,
+  "LOCALE": "Europe/Helsinki"
+}
