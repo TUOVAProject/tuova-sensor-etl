@@ -35,7 +35,7 @@ def insert_summary(data=None, opts={}, dry_run=False):
 
     # summary row
     rows.append((
-        event_type_ids[9999],
+        event_type_ids["9999"],
         event_source_id,
         int(workcenter_id),
         start_of_day.isoformat(),
@@ -55,14 +55,21 @@ def insert_summary(data=None, opts={}, dry_run=False):
 
     # segment rows
     for t in tuples:
-        processing_min = float(t[3] / 60) if opts["states"][t[0]] == "PROCESSING" else 0
-        idle_min = float(t[3] / 60) if opts["states"][t[0]] == "IDLE" else 0
-        off_min = float(t[3] / 60) if opts["states"][t[0]] == "OFF" else 0
+        # LOGIK!
+        # t[0] = state id
+        # t[1] = start
+        # t[2] = end
+        # t[3] = duration_sec
+        # opts["states"] = {"OFF": {"id":0}, "IDLE": {"id:"1}, "PROCESSING": {"id":2}}
+        # so:
+        processing_min = float(t[3] / 60) if opts["states"]["PROCESSING"]["id"] == t[0] else 0
+        idle_min = float(t[3] / 60) if opts["states"]["IDLE"]["id"] == t[0] else 0
+        off_min = float(t[3] / 60) if opts["states"]["OFF"]["id"] == t[0] else 0
         start_t = t[1].tz_localize(LOCALE)
         end_t = t[2].tz_localize(LOCALE)
 
         rows.append((
-            event_type_ids[t[0]],
+            event_type_ids[str(t[0])],
             event_source_id,
             int(workcenter_id),
             start_t.isoformat(),
@@ -121,3 +128,5 @@ def insert_summary(data=None, opts={}, dry_run=False):
         print(rows[0])
         print()
         print(rows[1])
+
+    return 0
