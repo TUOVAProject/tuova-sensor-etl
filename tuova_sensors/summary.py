@@ -42,11 +42,11 @@ def get_summary(in_csv=None, in_df=None, opts={}):
 
     # add states
     thresholds = [
-        (df["smoothed"] < opts["thresholds"][0]),
-        (df["smoothed"] < opts["thresholds"][1]),
-        (df["smoothed"] < opts["thresholds"][2]),
-        (df["smoothed"] < opts["thresholds"][3]),
-        (df["smoothed"] >= opts["thresholds"][3]),
+        (df["smoothed"] < 0),
+        (df["smoothed"] < opts["states"]["OFF"]["max"]),
+        (df["smoothed"] < opts["states"]["IDLE"]["max"]),
+        (df["smoothed"] < opts["states"]["PROCESSING"]["max"]),
+        (df["smoothed"] >= opts["states"]["PROCESSING"]["max"]),
     ]
 
     # values assigned by state
@@ -102,7 +102,7 @@ def get_summary(in_csv=None, in_df=None, opts={}):
     totals["duration_min"] = totals["duration_sec"].div(60)
 
     # add state names
-    totals["state_name"] = totals.index.map(opts["states"])
+    totals["state_name"] = totals.index.map({v["id"]: k for k, v in opts["states"].items()})
 
     # return timeseries values, state segments ("events") and total durations
     return {"df": df, "segments": segments, "totals": totals}
