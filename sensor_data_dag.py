@@ -29,7 +29,7 @@ with DAG(
     # read conf file and return a list of machine-specific config parameters for all machines defined in config.workcenters
     # NOTE: since the new config.json, the above might not make much sense since it's all in the same file now
     # with the "task expansion" or whatever this results in the subsequent tasks being replicated for each workcenter
-    @task.external_python(python=python_exec_path, task_id="read_config_task")
+    @task.external_python(python=python_exec_path, task_id="read_config_task", show_return_value_in_logs=False)
     def read_config(config_path:str=None, date=None):
 
         import json
@@ -70,7 +70,7 @@ with DAG(
     # NOTE: all tasks from here on operate on a single "opts" object from the list returned by read_config
 
     # get the raw data from influx
-    @task.external_python(python=python_exec_path, task_id="extract_data_task")
+    @task.external_python(python=python_exec_path, task_id="extract_data_task", show_return_value_in_logs=False)
     def extract_data(opts=None):
 
         import os
@@ -97,7 +97,7 @@ with DAG(
         return opts
 
     # do the summary
-    @task.external_python(python=python_exec_path, task_id="transform_data_task")
+    @task.external_python(python=python_exec_path, task_id="transform_data_task", show_return_value_in_logs=False)
     def transform_data(opts=None):
 
         import os
@@ -133,7 +133,7 @@ with DAG(
         return opts
 
     # send the summary to postgresql
-    @task.external_python(python=python_exec_path, task_id="load_data_task")
+    @task.external_python(python=python_exec_path, task_id="load_data_task", show_return_value_in_logs=False)
     def load_data(opts=None):
 
         import os
@@ -170,7 +170,7 @@ with DAG(
         return opts
 
     # remove all files created by the previous tasks
-    @task.external_python(python=python_exec_path, task_id="cleanup_task")
+    @task.external_python(python=python_exec_path, task_id="cleanup_task", show_return_value_in_logs=False)
     def cleanup(opts=None):
         import os
         import glob
