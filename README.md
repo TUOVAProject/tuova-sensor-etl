@@ -123,6 +123,10 @@ See [LICENCE.md](LICENCE.md)
 - https://github.com/TUOVAProject/tuotantotiedon-tietomalli
 - https://tuovaproject.github.io/tuotantotiedon-tietomalli/
 
-### The sensor data collection system
+### Sensor data collection system
 
 - https://github.com/TUOVAProject/tuova-iot
+
+### Sensor data - further processing
+
+- https://github.com/TUOVAProject/tuova_machinedata_processing
