@@ -7,6 +7,8 @@
 > **Everything is provided as-is, use at your own risk.**
 >
 > TUOVA Project co-funded by the European Union / Etelä-Savon ELY-keskus.
+>
+> ![Co-funded by the EU](co-fundedbythe-eu.png)
 
 ## Overview
 
