@@ -2,7 +2,7 @@
 
 > ## IMPORTANT!
 >
-> This repository was created as part of the TUOVA Project (see https://tuova.savonia.fi and https://tuovaproject.github.io/). Most of the information provided here assumes some familiarity with the data model ("Tuotantotiedon tietomalli") as well as the sensor data collection system also developed during the TUOVA Project (see https://github.com/TUOVAProject/tuotantotiedon-tietomalli, https://tuovaproject.github.io/tuotantotiedon-tietomalli/ and https://github.com/TUOVAProject/tuova-iot). It is also assumed that an InfluxDB database with raw measurements and a PostgreSQL database with the data model schema are already deployed.
+> This repository was created as part of the TUOVA Project (see https://tuova.savonia.fi and https://tuovaproject.github.io/). Some of the information presented here might assume familiarity with other repositories created during the course of the project. For more details on those, see the "Additional Information" section at the bottom of this README.
 >
 > **Everything is provided as-is, use at your own risk.**
 >
@@ -10,7 +10,7 @@
 >
 > ![Co-funded by the EU](co-fundedbythe-eu.png)
 
-## Overview
+## General
 
 This repository contains python modules for an ETL process that does the following:
 
@@ -22,6 +22,12 @@ This repository contains python modules for an ETL process that does the followi
 While these modules do not specifically assume a certain way of collecting the raw sensor data, it is somewhat assumed that said data consists of electric current measurements taken from the mains supply of a multi-function CNC machine (1 phase, ranging from 0A to 100A, measured in 1-second intervals).
 
 An Apache Airflow DAG file is also provided, see https://airflow.apache.org/ for further info.
+
+## Prerequisites
+
+- It is assumed that an InfluxDB database with raw measurement data is already deployed
+- It is also assumed that a PostgreSQL database with the data model schema is already deployed
+- While not mandatory, any Airflow-related info assumes that Airflow is already deployed.
 
 ## Dev setup
 
@@ -38,17 +44,17 @@ An Apache Airflow DAG file is also provided, see https://airflow.apache.org/ for
 - `influx_*`: Your InfluxDB database details
 - `pg_*`: Your PostgreSQL database details
 - `workcenters`: An array of workcenters to which the process would be applied. Fields:
-  - `workcenter_id`: The unique identifier of this workcenter/machine (e.g. from ERP)
-  - `influx_measurement`: Name of the InfluxDB measurement containing raw sensor data for this workcenter (e.g. `tuova-iot`)
-  - `influx_field`: Name of the InfluxDB field containing raw sensor data for this workcenter (e.g. `L1`)
-  - `states`: Parameters for the different states (`OFF`, `IDLE`, `PROCESSING`) of this workcenter. The structure is as follows:
-    - `[STATE]`:
-      - `id`: Internal ID for the state `[STATE]`, used as an index in calculations (just leave these to `OFF=0`, `IDLE=1`, `PROCESSING=2`)
-      - `min`: The lower value boundary / threshold of `[STATE]`
-      - `max`: The higher value boundary / threshold of `[STATE]`
-      - (put simply, a given measurement maps to `[STATE]` whenever its value is between `min` and `max`)
-  - `debounce_up_sec`: Minimum time in seconds for which the measurement needs to be between `min` and `max` to register a state change from a "lower" state (i.e. a state with a smaller `id`) to a higher one
-  - `debounce_down_sec`: Same as above, but the other way around (i.e. when transitioning from a "higher" state to a "lower" one)
+    - `workcenter_id`: The unique identifier of this workcenter/machine (e.g. from ERP)
+    - `influx_measurement`: Name of the InfluxDB measurement containing raw sensor data for this workcenter (e.g. `tuova-iot`)
+    - `influx_field`: Name of the InfluxDB field containing raw sensor data for this workcenter (e.g. `L1`)
+    - `states`: Parameters for the different states (`OFF`, `IDLE`, `PROCESSING`) of this workcenter. The structure is as follows:
+        - `[STATE]`:
+            - `id`: Internal ID for the state `[STATE]`, used as an index in calculations (just leave these to `OFF=0`, `IDLE=1`, `PROCESSING=2`)
+            - `min`: The lower value boundary / threshold of `[STATE]`
+            - `max`: The higher value boundary / threshold of `[STATE]`
+            - (put simply, a given measurement maps to `[STATE]` whenever its value is between `min` and `max`)
+    - `debounce_up_sec`: Minimum time in seconds for which the measurement needs to be between `min` and `max` to register a state change from a "lower" state (i.e. a state with a smaller `id`) to a higher one
+    - `debounce_down_sec`: Same as above, but the other way around (i.e. when transitioning from a "higher" state to a "lower" one)
 - `event_type_ids`: Mappings between states' internal IDs and event types in PostgreSQL (example values based on the data model). Internal ID of `9999` is used for daily summaries.
 - `event_source_id`: Source identifier in PostgreSQL (`3` meaning events are based on sensor data, as per the data model)
 - `LOCALE`: Controls the timezone of local datetimes. Use `Europe/Helsinki` if summaries etc. are supposed to be based on Finnish time (should take DST into account as well).
@@ -111,7 +117,7 @@ If nothing in this README (or the code) makes sense, feel free to improve.
 
 See [LICENCE.md](LICENCE.md)
 
-## Additonal Information
+## Additional Information
 
 ### The TUOVA Project
 
@@ -123,9 +129,21 @@ See [LICENCE.md](LICENCE.md)
 - https://github.com/TUOVAProject/tuotantotiedon-tietomalli
 - https://tuovaproject.github.io/tuotantotiedon-tietomalli/
 
+### On-premises server environment
+
+- https://github.com/TUOVAProject/tuova_on_prem_server
+
 ### Sensor data collection system
 
 - https://github.com/TUOVAProject/tuova-iot
+
+### Energy analyzer data collection system
+
+- https://github.com/TUOVAProject/tuova_energymeter
+
+### Sensor data ETL process
+
+- https://github.com/TUOVAProject/tuova-sensor-etl
 
 ### Sensor data - further processing
 
