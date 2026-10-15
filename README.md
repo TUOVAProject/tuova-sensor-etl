@@ -113,9 +113,9 @@ Pro Tip: if the DAG is not visible in the web GUI, access the Airflow container 
 
 If nothing in this README (or the code) makes sense, feel free to improve.
 
-## LICENCE
+## LICENSE
 
-See [LICENCE.md](LICENCE.md)
+See [LICENSE](LICENSE)
 
 ## Additional Information
 
